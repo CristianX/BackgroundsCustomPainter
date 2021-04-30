@@ -36,7 +36,11 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
     controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
 
     // Configurando rotación (de 0 a 2)
-    rotacion = Tween( begin: 0.0, end: 4 * Math.pi ).animate( controller );
+    rotacion = Tween( begin: 0.0, end: 2 * Math.pi ).animate( 
+
+      CurvedAnimation( parent:  controller, curve: Curves.easeOut )
+
+    );
 
     // Ver estado de la animación con listener
     controller.addListener(() {
@@ -44,7 +48,8 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
       print('Status: ' + controller.status.toString());
 
       if(controller.status == AnimationStatus.completed){
-        controller.reverse();
+        // controller.reverse();
+        controller.reset();
       }
 
     });
