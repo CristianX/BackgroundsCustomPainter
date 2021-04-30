@@ -33,8 +33,10 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
   // initState solo se ejecuta cuando se inicia el widget
   void initState() {
 
-    // El state debe tener SingleTickerProviderStateMixin para controlar el vsync
-    controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
+    // El state debe tener SingleTickerProviderStateMixin para controlar el vsync, la animación dura 4 segundos
+    controller = new AnimationController(
+      vsync: this, duration: Duration(milliseconds: 4000)
+    );
 
     // Configurando rotación (de 0 a 2)
     rotacion = Tween( begin: 0.0, end: 2 * Math.pi ).animate( 
@@ -43,7 +45,12 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
     );
 
-    opacidad = Tween( begin: 0.1, end: 1.0 ).animate(controller);
+    opacidad = Tween( begin: 0.1, end: 1.0 ).animate(
+
+      // Interval sirve para animar en el tiempo de la animación (0.25 es para animar en un cuarto de la animación principal)
+      CurvedAnimation( parent:  controller, curve: Interval(0, 0.25, curve: Curves.easeOut ) )
+
+    );
 
     // Ver estado de la animación con listener
     controller.addListener(() {
