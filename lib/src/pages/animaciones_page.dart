@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as Math;
 
 class AnimacionesPage extends StatelessWidget {
   @override
@@ -28,13 +29,26 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
   // Inicializar los dos objetos de Animation
   @override
+  // initState solo se ejecuta cuando se inicia el widget
   void initState() {
 
     // El state debe tener SingleTickerProviderStateMixin para controlar el vsync
     controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
 
     // Configurando rotación (de 0 a 2)
-    rotacion = Tween( begin: 0.0, end: 2.0 ).animate( controller );
+    rotacion = Tween( begin: 0.0, end: 4 * Math.pi ).animate( controller );
+
+    // Ver estado de la animación con listener
+    controller.addListener(() {
+
+      print('Status: ' + controller.status.toString());
+
+      if(controller.status == AnimationStatus.completed){
+        controller.reverse();
+      }
+
+    });
+
 
     super.initState();
   }
