@@ -27,6 +27,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
   // Animación (Que tipo de cosa yo quiero animar?)
   Animation<double> rotacion;
   Animation<double> opacidad;
+  Animation<double> moverDerecha;
 
   // Inicializar los dos objetos de Animation
   @override
@@ -40,16 +41,17 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
     // Configurando rotación (de 0 a 2)
     rotacion = Tween( begin: 0.0, end: 2 * Math.pi ).animate( 
-
       CurvedAnimation( parent:  controller, curve: Curves.easeOut )
-
     );
 
     opacidad = Tween( begin: 0.1, end: 1.0 ).animate(
-
       // Interval sirve para animar en el tiempo de la animación (0.25 es para animar en un cuarto de la animación principal)
       CurvedAnimation( parent:  controller, curve: Interval(0, 0.25, curve: Curves.easeOut ) )
+    );
 
+    // end es el número de pixeles que se moverá el cuadro
+    moverDerecha = Tween(begin: 0.0, end: 200.0).animate(
+      CurvedAnimation( parent:  controller, curve: Curves.easeOut )
     );
 
     // Ver estado de la animación con listener
@@ -90,14 +92,17 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
         
         // Ejecución de la animación
-        return Transform.rotate(
-            angle: rotacion.value,
-            //child: child //Tambien se puede poner el child (child:child) para cuando son widgets pesados
-            child: Opacity(
-              opacity: opacidad.value,
-              child: childRectangulo,
+        return Transform.translate(
+            offset: Offset( moverDerecha.value , 0),
+            child: Transform.rotate(
+              angle: rotacion.value,
+              //child: child //Tambien se puede poner el child (child:child) para cuando son widgets pesados
+              child: Opacity(
+                opacity: opacidad.value,
+                child: childRectangulo,
+              ),
             ),
-          );
+        );
       },
     );
 
