@@ -33,7 +33,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
     // El state debe tener SingleTickerProviderStateMixin para controlar el vsync
     controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
 
-    // Configurando rotación
+    // Configurando rotación (de 0 a 2)
     rotacion = Tween( begin: 0.0, end: 2.0 ).animate( controller );
 
     super.initState();
@@ -50,7 +50,24 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return _Rectangulo();
+
+    // Play o reproducción
+    controller.forward();
+    
+    return AnimatedBuilder(
+      animation: controller,
+      // child: _Rectangulo(), (opcional)
+      builder: (BuildContext context, Widget child) {
+
+        
+        // Ejecución de la animación
+        return Transform.rotate(
+            angle: rotacion.value,
+            child: _Rectangulo() //Tambien se puede poner el child (child:child)
+          );
+      },
+    );
+
   }
 }
 
