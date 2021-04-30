@@ -27,6 +27,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
   // Animación (Que tipo de cosa yo quiero animar?)
   Animation<double> rotacion;
   Animation<double> opacidad;
+  Animation<double> opacidadOut;
   Animation<double> moverDerecha;
   Animation<double> agrandar;
 
@@ -50,6 +51,11 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
       CurvedAnimation( parent:  controller, curve: Interval(0, 0.25, curve: Curves.easeOut ) )
     );
 
+    opacidadOut = Tween( begin: 0.0, end: 1.0 ).animate(
+      // Interval sirve para animar en el tiempo de la animación (0.25 es para animar en un cuarto de la animación principal)
+      CurvedAnimation( parent:  controller, curve: Interval(0.75, 1.0, curve: Curves.easeOut ) )
+    );
+
     // end es el número de pixeles que se moverá el cuadro
     moverDerecha = Tween(begin: 0.0, end: 200.0).animate(
       CurvedAnimation( parent:  controller, curve: Curves.easeOut )
@@ -63,13 +69,14 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
     // Ver estado de la animación con listener
     controller.addListener(() {
 
-      print('Status: ' + controller.status.toString());
+      // Eliminar la info de estado de la animación cuando se mande a producción por motivo del consumo de memoria
+      // print('Status: ' + controller.status.toString());
 
       if(controller.status == AnimationStatus.completed){
         
-        controller.repeat();
+        // controller.repeat();
         // controller.reverse();
-        // controller.reset();
+        controller.reset();
       }
 
     });
@@ -98,6 +105,9 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
       child: _Rectangulo(), //(opcional)
       builder: (BuildContext context, Widget childRectangulo) {
 
+        // Obteniendo información del estado del widget por medio de value
+        // print('Opacidad: ' + opacidad.value.toString());
+        // print('Rotación: ' + rotacion.value.toString());
         
         // Ejecución de la animación
         return Transform.translate(
@@ -106,7 +116,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
               angle: rotacion.value,
               //child: child //Tambien se puede poner el child (child:child) para cuando son widgets pesados
               child: Opacity(
-                opacity: opacidad.value,
+                opacity: opacidad.value - opacidadOut.value,
                 child: Transform.scale(
                   scale: agrandar.value,
                   child: childRectangulo
