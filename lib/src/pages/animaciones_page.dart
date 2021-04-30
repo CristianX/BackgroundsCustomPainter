@@ -28,6 +28,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
   Animation<double> rotacion;
   Animation<double> opacidad;
   Animation<double> moverDerecha;
+  Animation<double> agrandar;
 
   // Inicializar los dos objetos de Animation
   @override
@@ -54,14 +55,21 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
       CurvedAnimation( parent:  controller, curve: Curves.easeOut )
     );
 
+    // end en 1 es su tamaño original y en 2, el doble de su tamaño
+    agrandar = Tween(begin: 0.0, end: 2.0).animate(
+      CurvedAnimation( parent:  controller, curve: Curves.easeOut )
+    );
+
     // Ver estado de la animación con listener
     controller.addListener(() {
 
       print('Status: ' + controller.status.toString());
 
       if(controller.status == AnimationStatus.completed){
+        
+        controller.repeat();
         // controller.reverse();
-        controller.reset();
+        // controller.reset();
       }
 
     });
@@ -99,7 +107,10 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
               //child: child //Tambien se puede poner el child (child:child) para cuando son widgets pesados
               child: Opacity(
                 opacity: opacidad.value,
-                child: childRectangulo,
+                child: Transform.scale(
+                  scale: agrandar.value,
+                  child: childRectangulo
+                ),
               ),
             ),
         );
