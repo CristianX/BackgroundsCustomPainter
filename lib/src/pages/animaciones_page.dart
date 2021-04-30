@@ -26,6 +26,7 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
   // Animación (Que tipo de cosa yo quiero animar?)
   Animation<double> rotacion;
+  Animation<double> opacidad;
 
   // Inicializar los dos objetos de Animation
   @override
@@ -41,6 +42,8 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
       CurvedAnimation( parent:  controller, curve: Curves.easeOut )
 
     );
+
+    opacidad = Tween( begin: 0.1, end: 1.0 ).animate(controller);
 
     // Ver estado de la animación con listener
     controller.addListener(() {
@@ -75,14 +78,18 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
     
     return AnimatedBuilder(
       animation: controller,
-      // child: _Rectangulo(), (opcional)
-      builder: (BuildContext context, Widget child) {
+      child: _Rectangulo(), //(opcional)
+      builder: (BuildContext context, Widget childRectangulo) {
 
         
         // Ejecución de la animación
         return Transform.rotate(
             angle: rotacion.value,
-            child: _Rectangulo() //Tambien se puede poner el child (child:child)
+            //child: child //Tambien se puede poner el child (child:child) para cuando son widgets pesados
+            child: Opacity(
+              opacity: opacidad.value,
+              child: childRectangulo,
+            ),
           );
       },
     );
