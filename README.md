@@ -1,5 +1,8 @@
 # disenios_app
 
+#Dependencias
+- flutter_svg
+
 A new Flutter project.
 
 ## Getting Started
