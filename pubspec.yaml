@@ -31,6 +31,7 @@ dependencies:
 
   # Dependencias
   flutter_svg:
+  provider:
 
 dev_dependencies:
   flutter_test:

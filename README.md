@@ -1,7 +1,8 @@
 # disenios_app
 
 #Dependencias
-- flutter_svg
+- flutter_svg:
+- provider:
 
 A new Flutter project.
 
