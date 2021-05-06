@@ -21,11 +21,40 @@ class SlideShowPage extends StatelessWidget {
   }
 }
 
-class _Slides extends StatelessWidget {
+class _Slides extends StatefulWidget {
+
+  @override
+  __SlidesState createState() => __SlidesState();
+}
+
+class __SlidesState extends State<_Slides> {
+
+  // Controlador (siempre cuando se lo tnega es recomendable hacer un dispose por temas de consumo de meoria)
+  final pageViewController = new PageController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    pageViewController.addListener(() {
+      print('Página actual: ${ pageViewController.page }');
+    });
+
+  }
+
+  @override
+  void dispose() {
+    pageViewController.dispose();
+    super.dispose();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: PageView(
+        controller: pageViewController,
         children: <Widget>[
           _Slide('assets/svgs/slide-1.svg'),
           _Slide('assets/svgs/slide-2.svg'),
@@ -64,10 +93,9 @@ class _Dots extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-
-          _Dot(),
-          _Dot(),
-          _Dot(),
+          _Dot(0),
+          _Dot(1),
+          _Dot(2),
 
         ],
       ),
@@ -77,9 +105,12 @@ class _Dots extends StatelessWidget {
 }
 
 class _Dot extends StatelessWidget {
-  const _Dot({
-    Key key,
-  }) : super(key: key);
+
+  final int index;
+
+  const _Dot(this.index);
+
+
 
   @override
   Widget build(BuildContext context) {
