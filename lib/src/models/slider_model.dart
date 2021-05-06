@@ -9,8 +9,9 @@ class SliderModel with ChangeNotifier {
   // Getters y setters
   double get currentPage => this._currentPage;
 
-  set currentPage( double currentPage ) {
-    this._currentPage = currentPage;
+  set currentPage( double pagina ) {
+    this._currentPage = pagina;
+    // print( pagina );
     notifyListeners();
   }
 
