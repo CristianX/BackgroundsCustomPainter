@@ -11,8 +11,8 @@ class SlideshowPage extends StatelessWidget {
       // backgroundColor: Colors.purple,
       body: Slideshow(
         // puntosArriba: true,
-        // colorPrimario: Colors.purple,
-        // colorSecundario: Colors.white,
+        colorPrimario: Colors.purple,
+        colorSecundario: Colors.red,
         slides: <Widget>[
           SvgPicture.asset('assets/svgs/slide-1.svg'),
           SvgPicture.asset('assets/svgs/slide-2.svg'),
