@@ -9,13 +9,17 @@ class Slideshow extends StatelessWidget {
   final bool puntosArriba;
   final Color colorPrimario;
   final Color colorSecundario;
+  final double bulletPrimario;
+  final double bulletSecundario;
 
   Slideshow({
     // Si widget necesita a fuerza unargumento hay que mandarlo obligatoriamente
     @required this.slides,
-    this.puntosArriba = false,
-    this.colorPrimario = Colors.blue,
-    this.colorSecundario = Colors.grey
+    this.puntosArriba     = false,
+    this.colorPrimario    = Colors.blue,
+    this.colorSecundario  = Colors.grey,
+    this.bulletPrimario   = 12.0,
+    this.bulletSecundario = 12.0,
   });
 
   @override
@@ -29,6 +33,8 @@ class Slideshow extends StatelessWidget {
               builder: (BuildContext context) {
                 Provider.of<_SlideshowModel>(context).colorPrimario = this.colorPrimario;
                 Provider.of<_SlideshowModel>(context).colorSecundario = this.colorSecundario;
+                Provider.of<_SlideshowModel>(context).bulletPrimario = this.bulletPrimario;
+                Provider.of<_SlideshowModel>(context).bulletSecundario = this.bulletSecundario;
                 return _CrearEstructuraSlideshow(puntosArriba: puntosArriba, slides: slides);
               },
             
@@ -180,14 +186,24 @@ class _Dot extends StatelessWidget {
 
     // final pageViewIndex = Provider.of<_SlideshowModel>(context).currentPage;
     final ssModel = Provider.of<_SlideshowModel>(context);
+    double tamano;
+    Color color;
+
+    if ( ssModel._currentPage >= index - 0.5 && ssModel._currentPage < index + 0.5 ) {
+      tamano = ssModel.bulletPrimario;
+      color = ssModel.colorPrimario;
+    } else {
+      tamano = ssModel.bulletSecundario;
+      color = ssModel.colorSecundario;
+    }
 
     return AnimatedContainer(
       duration: Duration( milliseconds: 200 ),
-      width: 12,
-      height: 12,
+      width:  tamano,
+      height: tamano,
       margin: EdgeInsets.symmetric( horizontal: 5 ),
       decoration: BoxDecoration(
-        color: ( ssModel._currentPage >= index - 0.5 && ssModel._currentPage < index + 0.5 ) ? ssModel.colorPrimario : ssModel.colorSecundario,
+        color: color,
         shape: BoxShape.circle
       ),
     );
@@ -197,9 +213,11 @@ class _Dot extends StatelessWidget {
 // Modelo
 class _SlideshowModel with ChangeNotifier {
 
-  double _currentPage    = 0;
-  Color _colorPrimario   = Colors.blue;
-  Color _colorSecundario = Colors.grey;
+  double _currentPage      = 0;
+  Color _colorPrimario     = Colors.blue;
+  Color _colorSecundario   = Colors.grey;
+  double _bulletPrimario   = 12;
+  double _bulletSecundario = 12;
 
   // Getters y setters
   double get currentPage => this._currentPage;
@@ -221,5 +239,19 @@ class _SlideshowModel with ChangeNotifier {
     this._colorSecundario = color;
     notifyListeners();
   }
+
+  double get bulletPrimario => this._bulletPrimario;
+  set bulletPrimario ( double bullet ) {
+    this._bulletPrimario = bullet;
+    notifyListeners();
+  }
+
+  double get bulletSecundario => this._bulletSecundario;
+  set bulletSecundario ( double bullet ) {
+    this._bulletSecundario = bullet;
+    notifyListeners();
+  }
+
+
 
 }
