@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:disenios_app/src/pages/slideshow_page.dart';
+import 'package:disenios_app/src/pages/pinterest_page.dart';
 
 
+// import 'package:disenios_app/src/pages/slideshow_page.dart';
 // import 'package:disenios_app/src/labs/slideshow_page.dart';
 // import 'package:disenios_app/src/pages/graficas_circulares_page.dart';
 // import 'package:disenios_app/src/pages/animaciones_page.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Diseños App',
-      home: SlideshowPage()
+      home: PinterestPage()
     );
   }
 }
