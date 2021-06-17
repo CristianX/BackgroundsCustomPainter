@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:disenios_app/src/widgets/pinterest_menu.dart';
 
 class PinterestPage extends StatelessWidget {
@@ -9,16 +10,19 @@ class PinterestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      // body: PinterestGrid(),
-      // body: PinterestMenu(),
-      body: Stack(
-        children: <Widget>[
-          PinterestGrid(),
-          _PinterestMenuLocation(),
-        ],
-      ),
-   );
+    return ChangeNotifierProvider(
+      create: (_) => new _MenuModel(),
+      child: Scaffold(
+        // body: PinterestGrid(),
+        // body: PinterestMenu(),
+        body: Stack(
+          children: <Widget>[
+            PinterestGrid(),
+            _PinterestMenuLocation(),
+          ],
+        ),
+       ),
+    );
   }
 }
 
@@ -27,6 +31,7 @@ class _PinterestMenuLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthPantalla = MediaQuery.of(context).size.width;
+    final mostrar = Provider.of<_MenuModel>(context).mostrar;
     return Positioned(
       bottom: 30.0,
       child: Container(
@@ -34,7 +39,12 @@ class _PinterestMenuLocation extends StatelessWidget {
         width: widthPantalla,
         child: Align(
           // alignment: Alignment.centerRight,
-          child: PinterestMenu(),
+          child: PinterestMenu(
+            mostrar: mostrar,
+            // backgroundColor: Colors.red,
+            // activeColor: Colors.red,
+            // inactiveColor: Colors.blue,
+          ),
         ),
       ),
     );
@@ -59,10 +69,12 @@ class _PinterestGridState extends State<PinterestGrid> {
       // Escuchando cuandoPinterest grid se mueva
       // print('ScrollListener ${ controller.offset }');
 
-      if( controller.offset > scrollAnterior ) {
-        print('Ocultar menú');
+      if( controller.offset > scrollAnterior && controller.offset > 150 ) {
+        // print('ocultar Menú');
+        Provider.of<_MenuModel>(context, listen: false).mostrar = false;
       } else {
-        print('Mostrar Menú');
+        // print('Mostrar Menú');
+        Provider.of<_MenuModel>(context, listen: false).mostrar = true;
       }
 
       scrollAnterior = controller.offset;
@@ -114,5 +126,16 @@ class _PinterestItem extends StatelessWidget {
           child: new Text('$index'),
         ),
       ));
+  }
+}
+
+class _MenuModel with ChangeNotifier {
+  bool _mostrar = true;
+
+  bool get mostrar => this._mostrar;
+
+  set mostrar( bool valor ) {
+    this._mostrar = valor;
+    notifyListeners();
   }
 }
