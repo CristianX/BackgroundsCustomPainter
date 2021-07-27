@@ -4,6 +4,7 @@
 - flutter_svg:
 - provider:
 - flutter_staggered_grid_view:
+- font_awesome_flutter:
 
 A new Flutter project.
 
