@@ -12,7 +12,13 @@ class EmergencyPage extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Colors.red,
       body: Center(
-        child: BotonGordo(),
+        child: BotonGordo(
+          icon: FontAwesomeIcons.carCrash,
+          texto: 'Accidente Automovilístico',
+          color1: Color(0xff6989f5),
+          color2: Color(0xff906ef5),
+          onPress: (){ print('Click!'); },
+        ),
       )
     );
   }
